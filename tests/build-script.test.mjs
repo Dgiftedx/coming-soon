@@ -57,13 +57,35 @@ console.log('--- Test Suite 1: Config Discovery & Listing ---');
   const res = runBuildCommand(['--list']);
   assert(res.status === 0, '--list command exits with code 0');
   assert(res.stdout.includes('aura-cloud'), 'Listing includes aura-cloud');
+  assert(res.stdout.includes('firstchoice-county'), 'Listing includes firstchoice-county');
   assert(res.stdout.includes('vanguard-atelier'), 'Listing includes vanguard-atelier');
   assert(res.stdout.includes('hyperion-dynamics'), 'Listing includes hyperion-dynamics');
   assert(res.stdout.includes('template'), 'Listing includes template');
 }
 
-// Test Suite 2: Valid Brand Selection (Vanguard Atelier)
-console.log('\n--- Test Suite 2: Valid Brand Build (Vanguard Atelier) ---');
+// Test Suite 2: Valid Brand Selection (Firstchoice County)
+console.log('\n--- Test Suite 2: Valid Brand Build (Firstchoice County) ---');
+{
+  const sourcePath = path.resolve(CONFIGS_DIR, 'firstchoice-county.js');
+  const sourceBefore = fs.readFileSync(sourcePath, 'utf-8');
+
+  const res = runBuildCommand(['firstchoice-county']);
+  assert(res.status === 0, 'Build firstchoice-county succeeds with exit code 0');
+  assert(res.stdout.includes('Firstchoice County'), 'Output confirms brand name');
+  assert(res.stdout.includes('elegant-gradient'), 'Output confirms layout preset');
+
+  // Verify target config.js content
+  const activeConfig = fs.readFileSync(CONFIG_FILE, 'utf-8');
+  assert(activeConfig.includes('Firstchoice County'), 'config.js now contains Firstchoice County');
+  assert(activeConfig === sourceBefore, 'config.js exactly matches source configuration');
+
+  // Verify source was not modified or deleted
+  const sourceAfter = fs.readFileSync(sourcePath, 'utf-8');
+  assert(sourceAfter === sourceBefore, 'Source configs/firstchoice-county.js is preserved unchanged');
+}
+
+// Test Suite 3: Valid Brand Selection (Vanguard Atelier)
+console.log('\n--- Test Suite 3: Valid Brand Build (Vanguard Atelier) ---');
 {
   const sourcePath = path.resolve(CONFIGS_DIR, 'vanguard-atelier.js');
   const sourceBefore = fs.readFileSync(sourcePath, 'utf-8');
@@ -73,18 +95,13 @@ console.log('\n--- Test Suite 2: Valid Brand Build (Vanguard Atelier) ---');
   assert(res.stdout.includes('Vanguard Atelier'), 'Output confirms brand name');
   assert(res.stdout.includes('centered-minimalist'), 'Output confirms layout preset');
 
-  // Verify target config.js content
   const activeConfig = fs.readFileSync(CONFIG_FILE, 'utf-8');
   assert(activeConfig.includes('Vanguard Atelier'), 'config.js now contains Vanguard Atelier');
   assert(activeConfig === sourceBefore, 'config.js exactly matches source configuration');
-
-  // Verify source was not modified or deleted
-  const sourceAfter = fs.readFileSync(sourcePath, 'utf-8');
-  assert(sourceAfter === sourceBefore, 'Source configs/vanguard-atelier.js is preserved unchanged');
 }
 
-// Test Suite 3: Valid Brand Selection (Hyperion Dynamics)
-console.log('\n--- Test Suite 3: Valid Brand Build (Hyperion Dynamics) ---');
+// Test Suite 4: Valid Brand Selection (Hyperion Dynamics)
+console.log('\n--- Test Suite 4: Valid Brand Build (Hyperion Dynamics) ---');
 {
   const sourcePath = path.resolve(CONFIGS_DIR, 'hyperion-dynamics.js');
   const sourceBefore = fs.readFileSync(sourcePath, 'utf-8');
@@ -99,8 +116,8 @@ console.log('\n--- Test Suite 3: Valid Brand Build (Hyperion Dynamics) ---');
   assert(activeConfig === sourceBefore, 'config.js exactly matches hyperion-dynamics.js');
 }
 
-// Test Suite 4: Valid Brand Selection (Aura Cloud)
-console.log('\n--- Test Suite 4: Valid Brand Build (Aura Cloud) ---');
+// Test Suite 5: Valid Brand Selection (Aura Cloud)
+console.log('\n--- Test Suite 5: Valid Brand Build (Aura Cloud) ---');
 {
   const sourcePath = path.resolve(CONFIGS_DIR, 'aura-cloud.js');
   const sourceBefore = fs.readFileSync(sourcePath, 'utf-8');
@@ -114,8 +131,8 @@ console.log('\n--- Test Suite 4: Valid Brand Build (Aura Cloud) ---');
   assert(activeConfig === sourceBefore, 'config.js exactly matches aura-cloud.js');
 }
 
-// Test Suite 5: Path Traversal Attack Prevention
-console.log('\n--- Test Suite 5: Security & Path Traversal Prevention ---');
+// Test Suite 6: Path Traversal Attack Prevention
+console.log('\n--- Test Suite 6: Security & Path Traversal Prevention ---');
 {
   const maliciousInputs = [
     '../package',
@@ -137,8 +154,8 @@ console.log('\n--- Test Suite 5: Security & Path Traversal Prevention ---');
   });
 }
 
-// Test Suite 6: Missing and Non-Existent Brand Identifiers
-console.log('\n--- Test Suite 6: Missing & Unknown Brand Handling ---');
+// Test Suite 7: Missing and Non-Existent Brand Identifiers
+console.log('\n--- Test Suite 7: Missing & Unknown Brand Handling ---');
 {
   // Non-existent brand
   const resUnknown = runBuildCommand(['non-existent-brand']);

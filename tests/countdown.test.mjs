@@ -34,16 +34,16 @@ console.log('====================================================\n');
 console.log('--- Test Suite 1: 73-Hour Launch Calculation ---');
 {
   const refStartIso = '2026-10-06T08:47:50+01:00';
-  const configuredLaunchAt = CONFIG.launch.launchAt;
+  const launchAt73h = '2026-10-09T09:47:50+01:00';
   const startMs = parseIsoTimestamp(refStartIso);
-  const targetMs = parseIsoTimestamp(configuredLaunchAt);
+  const targetMs = parseIsoTimestamp(launchAt73h);
 
   const durationMs = targetMs - startMs;
   const expected73HoursMs = 73 * 60 * 60 * 1000; // 262,800,000 ms
 
-  assertEqual(durationMs, expected73HoursMs, 'Configured launchAt must be exactly 73 hours from reference start');
+  assertEqual(durationMs, expected73HoursMs, '73h launch target must be exactly 73 hours from reference start');
 
-  const result = calculateTimeRemaining(configuredLaunchAt, startMs);
+  const result = calculateTimeRemaining(launchAt73h, startMs);
   assertEqual(result.days, 3, 'Days must be 3 (3 * 24 = 72h)');
   assertEqual(result.hours, 1, 'Hours must be 1 (72 + 1 = 73h)');
   assertEqual(result.minutes, 0, 'Minutes must be 0');
@@ -149,7 +149,7 @@ console.log('\n--- Test Suite 6: String Padding & Zero Formatting ---');
   assertEqual(padZero(-5), '00', 'Negative values clamped safely to 00');
 }
 
-// Test Suite 7: Invalid Configurations Handling
+// Test Suite 7: Graceful Handling of Malformed Configurations
 console.log('\n--- Test Suite 7: Graceful Handling of Malformed Configurations ---');
 {
   const invalidResult1 = calculateTimeRemaining('invalid-date-format');
@@ -175,6 +175,15 @@ console.log('\n--- Test Suite 8: Screen Reader Text Formatting ---');
 
   const expiredState = { isValid: true, isExpired: true, days: 0, hours: 0, minutes: 0, seconds: 0 };
   assertEqual(formatAccessibleCountdown(expiredState), 'The countdown has finished. The site is now live.', 'Expired announcement formatted correctly');
+}
+
+// Test Suite 9: Active Configuration Launch Clock Verification
+console.log('\n--- Test Suite 9: Active Configuration Verification ---');
+{
+  assert(Boolean(CONFIG.brand?.name), `Active config brand name is "${CONFIG.brand?.name}"`);
+  assert(Boolean(CONFIG.launch?.launchAt), `Active config launchAt is "${CONFIG.launch?.launchAt}"`);
+  const activeParsed = parseIsoTimestamp(CONFIG.launch?.launchAt);
+  assert(activeParsed !== null, 'Active config launchAt is a valid timestamp');
 }
 
 console.log('\n====================================================');

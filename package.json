@@ -6,6 +6,7 @@
   "scripts": {
     "test": "node tests/countdown.test.mjs && node tests/config-validator.test.mjs && node tests/build-script.test.mjs",
     "build": "node scripts/build.js",
+    "build:firstchoice": "node scripts/build.js firstchoice-county",
     "build:aura": "node scripts/build.js aura-cloud",
     "build:vanguard": "node scripts/build.js vanguard-atelier",
     "build:hyperion": "node scripts/build.js hyperion-dynamics",
