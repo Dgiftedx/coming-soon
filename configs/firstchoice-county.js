@@ -43,7 +43,7 @@ export const CONFIG = {
 
   launch: {
     mode: 'fixed',
-    launchAt: '2026-11-10T09:00:00-05:00', // US Eastern Time
+    launchAt: '2026-10-10T09:00:00-05:00', // US Eastern Time
     displayUnits: ['days', 'hours', 'minutes', 'seconds'],
     unitLabels: {
       days: 'Days',

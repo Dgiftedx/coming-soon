@@ -43,7 +43,7 @@ export const CONFIG = {
 
   launch: {
     mode: 'fixed',
-    launchAt: '2026-11-11T08:00:00Z', // UTC Global dispatch hour
+    launchAt: '2026-10-11T08:00:00Z', // UTC Global dispatch hour
     displayUnits: ['days', 'hours', 'minutes', 'seconds'],
     unitLabels: {
       days: 'Days',
