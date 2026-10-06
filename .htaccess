@@ -1,0 +1,33 @@
+# Security and Performance Headers for Apache
+<IfModule mod_headers.c>
+  # Prevent MIME type sniffing
+  Header set X-Content-Type-Options "nosniff"
+
+  # Prevent clickjacking / iframe embedding
+  Header set X-Frame-Options "SAMEORIGIN"
+
+  # Control Referrer information
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Modern Content Security Policy (allows self-hosted scripts, styles, and data URI favicon)
+  Header set Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self'; font-src 'self' data:; connect-src 'self';"
+
+  # Enable caching for static CSS and JS modules
+  <FilesMatch "\.(css|js|mjs|svg|png|jpg|webp|ico)$">
+    Header set Cache-Control "public, max-age=3600, must-revalidate"
+  </FilesMatch>
+
+  # HTML should not be aggressively cached to allow instant launch updates
+  <FilesMatch "\.(html)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# Ensure correct MIME type for JavaScript modules
+<IfModule mod_mime.c>
+  AddType text/javascript .js .mjs
+  AddType image/svg+xml .svg
+</IfModule>
+
+# Set default charset
+AddDefaultCharset UTF-8

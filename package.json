@@ -1,0 +1,25 @@
+{
+  "name": "universal-coming-soon-template",
+  "version": "1.0.0",
+  "description": "Production-ready, reusable, configuration-driven prelaunch website template with multi-brand Cloudflare Pages support.",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/countdown.test.mjs && node tests/config-validator.test.mjs && node tests/build-script.test.mjs",
+    "build": "node scripts/build.js",
+    "build:aura": "node scripts/build.js aura-cloud",
+    "build:vanguard": "node scripts/build.js vanguard-atelier",
+    "build:hyperion": "node scripts/build.js hyperion-dynamics",
+    "list-configs": "node scripts/build.js --list"
+  },
+  "keywords": [
+    "coming-soon",
+    "prelaunch",
+    "landing-page",
+    "countdown",
+    "cloudflare-pages",
+    "multi-brand",
+    "zero-dependencies"
+  ],
+  "author": "",
+  "license": "MIT"
+}
